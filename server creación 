@@ -1,0 +1,14 @@
+Crear dato de server 
+pkg update && pkg upgrade -y
+pkg install python php apache2 nano -y
+
+mkdir -p .shadow_z_sector/.perfil_server
+cd .shadow_z_sector/.perfil_server
+
+nano index.html
+
+python -m http.server 8080
+http://localhost:8080
+ 
+python -m http.server 7777
+http://localhost:7777
