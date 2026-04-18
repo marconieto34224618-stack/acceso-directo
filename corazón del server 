@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERROR 404 - SYSTEM FAILURE</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #FF0000;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 10px;
+            border: 3px solid #330000;
+            overflow-x: hidden;
+        }
+
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fingerprint {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #FF0000;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            cursor: pointer;
+            background: radial-gradient(circle, #300 0%, #000 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px #F00;
+        }
+
+        #pass-input {
+            background: #111;
+            border: 1px solid #F00;
+            color: #F00;
+            padding: 10px;
+            text-align: center;
+            outline: none;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: rgba(15, 0, 0, 0.98);
+            border-right: 2px solid #F00;
+            transition: 0.4s;
+            z-index: 9999;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        #sidebar.active { left: 0; }
+
+        .sidebar-handle {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            width: 30px;
+            height: 60px;
+            background: #F00;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+            z-index: 9998;
+            box-shadow: 0 0 10px #F00;
+        }
+
+        h1 { text-align: center; letter-spacing: 10px; border-bottom: 2px solid #FF0000; text-shadow: 0 0 15px #FF0000; }
+
+        .img-container { display: flex; justify-content: space-around; margin-bottom: 20px; }
+
+        .img-box {
+            width: 45%;
+            height: 120px;
+            border: 1px solid red;
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .panel { background: rgba(15, 0, 0, 0.95); border: 1px solid #FF0000; padding: 15px; margin-bottom: 15px; }
+
+        .hidden-content { display: none; margin-top: 10px; }
+
+        .btn-toggle { width: 100%; padding: 10px; background: #300; color: #F00; border: 1px solid #F00; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+
+        textarea { width: 100%; height: 100px; background: #050505; color: #00FF00; border: 1px solid #440000; font-size: 0.85rem; }
+
+        .cmd-line { color: #00FF00; margin-bottom: 5px; display: block;}
+
+        .sidebar-btn { width: 100%; background: #000; color: #F00; border: 1px solid #F00; padding: 8px; margin-bottom: 10px; font-size: 0.7rem; font-family: 'Courier New'; }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="fingerprint" onclick="checkAccess()">
+            <span style="font-size: 0.6rem;">SCAN ID</span>
+        </div>
+        <input type="password" id="pass-input" placeholder="INGRESE CLAVE ALPHA">
+        <p id="error-msg" style="font-size: 0.7rem; margin-top: 10px;"></p>
+    </div>
+
+    <div class="sidebar-handle" onclick="toggleSidebar()"></div>
+    <div id="sidebar">
+        <h3 style="color: #F00; font-size: 0.9rem; border-bottom: 1px solid #F00;">BLOC DE NOTAS Z</h3>
+        <textarea id="notepad" style="height: 150px; margin-bottom: 15px;" placeholder="Escribe tus planes de ataque aquí..."></textarea>
+
+        <h3 style="color: #F00; font-size: 0.9rem; border-bottom: 1px solid #F00;">TOOLS EXTRA</h3>
+        <button class="sidebar-btn" onclick="alert('IP: 181.XX.XX.XX\nStatus: Stealth')">VER MI IP PÚBLICA</button>
+        <button class="sidebar-btn" onclick="window.open('https://www.shodan.io', '_blank')">ABRIR SHODAN</button>
+        <button class="sidebar-btn" onclick="alert('Buscando backdoors...')">SCANNER DE VULNERABILIDAD</button>
+
+        <button class="btn-toggle" style="margin-top: 20px;" onclick="toggleSidebar()">CERRAR</button>
+    </div>
+
+    <h1>ERROR 404: ACCESS GRANTED</h1>
+
+    <button onclick="toggleSidebar()" style="background: #F00; color: #000; border: none; padding: 10px; font-weight: bold; width: 100%; margin-bottom: 10px; cursor:pointer;">☰ ABRIR PANEL LATERAL (NOTAS)</button>
+
+    <div class="img-container">
+        <div class="img-box" onclick="document.getElementById('file1').click()">
+            <img id="view1" src="" alt="[FOTO 1]">
+            <input type="file" id="file1" style="display:none" onchange="previewImg(this, 'view1')">
+        </div>
+        <div class="img-box" onclick="document.getElementById('file2').click()">
+            <img id="view2" src="" alt="[FOTO 2]">
+            <input type="file" id="file2" style="display:none" onchange="previewImg(this, 'view2')">
+        </div>
+    </div>
+
+    <div class="panel">
+        <button class="btn-toggle" onclick="toggleSection('servidores')">▶ INICIALIZAR SERVIDORES Y BÚNKERS</button>
+        <div id="servidores" class="hidden-content">
+            <span class="cmd-line"># PERMISOS TOTALES:</span>
+            <textarea readonly>termux-setup-storage && chmod +x * && apt update && apt upgrade</textarea>
+            <span class="cmd-line"># CREAR SERVIDORES:</span>
+            <textarea readonly>python -m http.server 8080 & python -m http.server 8081</textarea>
+            <span class="cmd-line"># DESPLIEGUE DE BÚNKERS:</span>
+            <textarea readonly>mkdir -p ~/Bunker_Alpha ~/Bunker_Omega && touch ~/Bunker_Alpha/index.html ~/Bunker_Omega/index.html</textarea>
+            <span class="cmd-line"># ACCESO RÁPIDO NANO:</span>
+            <textarea readonly>nano ~/Bunker_Alpha/index.html</textarea>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>📂 DATA EXFILTRATION (PHISHING)</h2>
+        <textarea id="phishing_data" placeholder="[WAITING FOR PACKETS...]"></textarea>
+    </div>
+
+    <div class="panel">
+        <h2>👁️ TARGET RECONNAISSANCE</h2>
+        <textarea id="recon_data" placeholder="[ENTITY ID | GEOLOCATION | IP_ADDR]"></textarea>
+    </div>
+
+    <div class="panel">
+        <button class="btn-toggle" onclick="toggleSection('arsenal')">▶ ARSENAL DE PENETRACIÓN</button>
+        <div id="arsenal" class="hidden-content">
+            <span class="cmd-line"># ESCANEO DE RED:</span>
+            <textarea readonly>nmap -sP 192.168.1.0/24</textarea>
+        </div>
+    </div>
+
+    <button style="background: red; color: black; width: 100%; padding: 15px; border: none; font-weight: bold; cursor: pointer;" onclick="location.reload()">PURGAR SESIÓN</button>
+
+    <script>
+        function checkAccess() {
+            const pass = document.getElementById('pass-input').value;
+            if(pass === "404") {
+                document.getElementById('lock-screen').style.display = 'none';
+            } else {
+                document.getElementById('error-msg').innerText = "ERROR: IDENTIDAD NO RECONOCIDA";
+                document.getElementById('pass-input').value = "";
+            }
+        }
+
+        function toggleSection(id) {
+            const sec = document.getElementById(id);
+            sec.style.display = (sec.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function previewImg(input, targetId) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetId).src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- SISTEMA DE MEMORIA Z ---
+        const ids = ['notepad', 'phishing_data', 'recon_data'];
+
+        window.onload = function() {
+            ids.forEach(id => {
+                if (localStorage.getItem(id)) {
+                    document.getElementById(id).value = localStorage.getItem(id);
+                }
+            });
+        };
+
+        ids.forEach(id => {
+            document.getElementById(id).oninput = function() {
+                localStorage.setItem(id, this.value);
+            };
+        });
+    </script>
+
+</body>
+</html>
