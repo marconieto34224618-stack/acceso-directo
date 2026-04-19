@@ -1,0 +1,37 @@
+mkdir -p ~/ARSENAL/NMAP_PANEL
+cd ~/ARSENAL/NMAP_PANEL
+nano nmap_pro.sh
+./nmap_pro.sh
+#!/bin/bash
+clear
+echo "==============================="
+echo "   🛰️ WATCHER Z - NMAP PRO"
+echo "==============================="
+echo "ns) Ping Scan (Ver quién vive)"
+echo "ss) Stealth Scan (Sigiloso)"
+echo "sv) Service Scan (Versiones/Login)"
+echo "va) Aggressive Scan (Todo junto)"
+echo "vu) Vuln Scan (Buscar fallos)"
+echo "==============================="
+read -p "Comando corto: " cmd
+read -p "IP Objetivo: " ip
+
+# Creamos el nombre del reporte basado en la IP para no perder nada
+reporte="reporte_$ip.txt"
+
+case $cmd in
+    ns) nmap -sn $ip -oN $reporte ;;
+    ss) nmap -sS $ip -oN $reporte ;;
+    sv) nmap -sV $ip -oN $reporte ;;
+    va) nmap -A $ip -oN $reporte ;;
+    vu) nmap --script vuln $ip -oN $reporte ;;
+    *) echo "Error: Comando no reconocido" ; exit ;;
+esac
+
+echo "==============================="
+echo "✅ Escaneo finalizado."
+echo "📂 Reporte guardado como: $reporte"
+echo "==============================="
+
+chmod +x nmap_pro.sh
+iplogger.org o grabify.link
