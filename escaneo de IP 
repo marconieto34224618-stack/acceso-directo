@@ -2,6 +2,7 @@ mkdir -p ~/ARSENAL/NMAP_PANEL
 cd ~/ARSENAL/NMAP_PANEL
 nano nmap_pro.sh
 ./nmap_pro.sh
+  GNU nano 9.0         nmap_pro.sh
 #!/bin/bash
 clear
 echo "==============================="
@@ -16,7 +17,7 @@ echo "==============================="
 read -p "Comando corto: " cmd
 read -p "IP Objetivo: " ip
 
-# Creamos el nombre del reporte basado en la IP para no perder nada
+# Creamos el nombre del reporte basado en la IP para >
 reporte="reporte_$ip.txt"
 
 case $cmd in
