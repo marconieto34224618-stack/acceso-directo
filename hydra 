@@ -1,6 +1,8 @@
 mkdir -p .shadow_z_sector/hydra_core
 cd .shadow_z_sector/hydra_core
-nano hydra_flood.py chmod +x hydra_flood.py python hydra_flood.py
+nano hydra_flood.py
+chmod +x hydra_flood.py 
+python hydra_flood.py
 192.168.0.1
 import os
 import socket
